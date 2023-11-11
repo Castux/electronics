@@ -53,11 +53,15 @@ local function get_time()
 end
 
 local function get_image_color(time)
-	for _,t in ipairs(config.times) do
-		if time >= t.from and time < t.to then
-			return t.image, t.color
+	local t = config.times
+
+	for i = 1, #t-1 do
+		if time >= t[i].from and time < t[i+1].from then
+			return t[i].image, t[i].color
 		end
 	end
+
+	return t[#t].image, t[#t].color
 end
 
 local last_time

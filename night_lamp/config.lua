@@ -16,9 +16,9 @@ return {
 	sla = 0x3c,
 
 	times = {
-		{from = "00:00", to = "07:00", image = images.sleeping, color = {0.7,0,0}},
-		{from = "07:00", to = "07:30", image = images.waking, color = {1,0.5,0}},
-		{from = "07:30", to = "20:00", image = images.awake, color = {0.2,1,0}},
-		{from = "20:00", to = "24:00", image = images.sleeping, color = {0.7,0,0}}
+--		{from = "00:00", image = images.sleeping, color = {0.7,0,0}},
+		{from = "07:00", image = images.waking, color = {1,0.5,0}},
+		{from = "07:30", image = images.awake, color = {0.2,1,0}},
+		{from = "20:00", image = images.sleeping, color = {0.7,0,0}}
 	}
 }
