@@ -2,6 +2,8 @@ return
 {
 	wifi = {
 		["SSID1"] = "Password1",
-		["SSID1"] = "Password2"
-	}
+		["SSID2"] = "Password2",
+	},
+
+	url = "https://pastebin.com/raw/JcGLDYGr"
 }
