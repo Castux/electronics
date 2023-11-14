@@ -1,5 +1,16 @@
 local config = dofile "config.lua"
 
+local disp
+local function init_i2c_display()
+	i2c.setup(0, config.sda, config.scl, i2c.FASTPLUS)
+
+	disp = u8g2.ssd1306_i2c_128x64_noname(0, config.sla)
+	disp:setFont(u8g2.font_6x10_tf)
+	disp:setFontRefHeightExtendedText()
+	disp:setFontPosTop()
+	disp:setFontDirection(0)
+end
+
 local function connect_to_ap(ssid, pwd, cb)
 	wifi.eventmon.register(wifi.eventmon.STA_CONNECTED, function(T)
 		print("Connected to " .. T.SSID .. "...")
@@ -58,38 +69,64 @@ local function start_blink()
 	end)
 end
 
-local function display_text(text)
-	print("Text: " .. text)
+local function write_wrap(str)
+
+	for i = 1,#str do
+		local row = math.floor((i - 1) / 18)
+		local col = (i - 1) % 18
+		disp:drawStr(col * 7, row * 10, str:sub(i,i))
+	end
+end
+
+local function decode_image(data)
+	local bytes = {}
+	data:gsub("..", function(s) table.insert(bytes, string.char(tonumber(x, 16))) end)
+	return table.concat(bytes)
 end
 
 local function show_message(data)
+
+	disp:clearBuffer()
+
 	local text = data:match("^T:(.*)")
-	if text then
-		display_text(text)
-		return
-	end
-
 	local img = data:match("^I:(.*)")
-	if img then
-		display_image(img)
-		return
+
+	if text then
+		write_wrap(text)
+	elseif img then
+		disp:drawXBM(0, 0, decode_image(img))
+	else
+		disp:drawStr(1, 1, ":'(")
 	end
 
-	print("Invalid data: " .. data)
+	disp:updateDisplay()
 end
 
 local function get_data()
 	http.get(config.url, nil, function(code, data)
 		if (code < 0) then
 			print("Failed HTTP request to " .. config.url)
+			disp:clearBuffer()
+			disp:drawStr(":(")
+			disp:updateDisplay()
 		else
 			show_message(data)
 		end
 	end)
 end
 
-start_blink()
-setup_wifi(function()
-	stop_blink()
-	loop(60 * 1000, get_data)
-end)
+local function main()
+
+	init_i2c_display()
+	disp:drawStr(1, 1, "Setting up wifi...")
+	disp:updateDisplay()
+
+	start_blink()
+	setup_wifi(function()
+		stop_blink()
+		loop(10 * 1000, get_data)
+	end)
+
+end
+
+main()
