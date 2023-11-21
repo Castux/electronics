@@ -48,12 +48,13 @@ local function setup_draw(disp)
 end
 
 local function get_time()
-	local tm = rtctime.epoch2cal(rtctime.get())
-	return string.format("%02d:%02d", (tm.hour + config.timezone) % 24, tm.min)
+	local tz_offset = config.timezone * 3600
+	local tm = rtctime.epoch2cal(rtctime.get() + tz_offset)
+	return string.format("%02d:%02d", tm.hour, tm.min), tm.wday
 end
 
-local function get_image_color(time)
-	local t = config.times
+local function get_image_color(time, day)
+	local t = config.times[day]
 
 	for i = 1, #t-1 do
 		if time >= t[i].from and time < t[i+1].from then
@@ -67,13 +68,13 @@ end
 local last_time
 local function update_clock(disp)
 
-	local time = get_time()
+	local time, day = get_time()
 	if time == last_time then
 		return
 	end
 	last_time = time
 
-	local image, color = get_image_color(time)
+	local image, color = get_image_color(time, day)
 
 	if color then
 		set_led(color[1], color[2], color[3])
