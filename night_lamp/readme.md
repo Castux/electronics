@@ -55,7 +55,7 @@ In the U8G options, select `ssd1306_i2c_128x64_noname` in the "u8g2 display, I²
 
 The `times` table is a array of seven entries, one per day of the week. It starts on 1 for Sunday, to 7 for Monday. You can have a separate entry for each day, or reuse common configs like in the example.
 
-Each day's entry is an array that defines a time span with its starting time, the image to use, and the color in RGB (1 is full, 0 is off):
+Each day's entry is an array that defines time spans with their starting times, the images to use, and the colors in RGB (1 is full, 0 is off):
 
 `{from = "07:00", image = images.waking, color = {1,0.5,0}}`
 
