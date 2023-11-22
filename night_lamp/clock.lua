@@ -11,9 +11,16 @@ local function init_led()
 end
 
 local function set_led_immediate(r,g,b)
+
+	-- Common anode
 	pwm.setduty(config.pin_r, (1-r) * 1023)
 	pwm.setduty(config.pin_g, (1-g) * 1023)
 	pwm.setduty(config.pin_b, (1-b) * 1023)
+
+	-- Common cathode
+	-- pwm.setduty(config.pin_r, r * 1023)
+	-- pwm.setduty(config.pin_g, g * 1023)
+	-- pwm.setduty(config.pin_b, b * 1023)
 end
 
 local current_r, current_g, current_b = 0,0,0
