@@ -63,7 +63,7 @@ Each time span is assumed to end at the start of the next one, and the last one 
 
 ## Custom images
 
-TODO
+See instructions in `etc/XBMconverter.lua`. Make sure your image is the same size as the display.
 
 ## Common anode vs. common cathode
 
