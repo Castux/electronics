@@ -15,7 +15,7 @@ This simple electronics project helps children learn to fall back asleep at nigh
 ![LED wiring](https://newbiely.com/images/tutorial/esp8266-rgb-led-wiring-diagram.jpg)
 
 - If your LED has a common anode, connect it to a power pin (3V3), if it has a common cathode, connect it to a ground pin (GND)
-- The three other pins can go to any GPIO pin on the NodeMCU board (marked D1 to D12, D0 cannot be used), via the resistors
+- The three other pins can go to any GPIO pins on the NodeMCU board (marked D1 to D12, D0 cannot be used), via the resistors
 - Finding the correct value for the resistors depends on the exact LED you're using. You can also just test it with a high value first (like 1 kOhm) and reduce progressively until you get a high enough intensity
 
 ![Display wiring](https://i0.wp.com/randomnerdtutorials.com/wp-content/uploads/2019/05/ESP8266_oled_display_wiring.png?w=828&quality=100&strip=all&ssl=1)
@@ -32,15 +32,15 @@ I recommend prototyping with breadboard, and then soldering permanently on strip
 
 Familiarise yourself with the [NodeMCU documentation](https://nodemcu.readthedocs.io/en/release/getting-started/)
 
-These instructions are for MacOS, adapt as needed. The general steps are as follows:
+The general steps are as follows:
 
-1. Flash the board with the NodeMCU firmware: the provided firmware `nodemcu-release-14-modules-2023-11-10-09-00-51-float.bin` should work just fine and contain all the necessary modules
-2. Copy or rename `config-example.lua` into `config.lua`, and modify it as needed. In particular, put your WiFi information, your time difference with UTC in hours, and the pins you used for the LED and display. See below for details on the rest of the config.
-3. Upload the all the Lua files in the root of the repository to the board using NodeMCU-Tool. It should be as simple as `nodemcu-tool upload --port=/dev/ttyUSB0 *.lua`. You can find your device's port using `nodemcu-tool devices`
+1. Flash the board with the NodeMCU firmware: the provided firmware `nodemcu-release-14-modules-2023-11-10-09-00-51-float.bin` should work just fine and contain all the necessary modules.
+2. Copy or rename `config-example.lua` into `config.lua`, and modify it as needed. In particular, put your WiFi information, your time difference with UTC in hours, and the pins you used for the LED and display. The `sla` entry is the I2C address of your display, which is usually printed on the circuit itself. See below for details on the rest of the config.
+3. Upload all the Lua files in the root of the repository to the board using NodeMCU-Tool. It should be as simple as `nodemcu-tool upload --port=/dev/ttyUSB0 *.lua`. You can find your device's port using `nodemcu-tool devices`
 
 ## Firmware
 
-If you need to rebuild the firmware, you can use the [cloud builder](https://nodemcu-build.com/). The required modules (on top of the preselected ones) are:
+If for some reason you need to rebuild the firmware, you can use the [cloud builder](https://nodemcu-build.com/). The required modules (on top of the preselected ones) are:
 
 - bit
 - i2c
@@ -49,11 +49,11 @@ If you need to rebuild the firmware, you can use the [cloud builder](https://nod
 - SNTP
 - U8G2
 
-In the U8G options, select `ssd1306_i2c_128x64_noname` in the "u8g2 display, I²C" menu
+In the U8G options, select `ssd1306_i2c_128x64_noname` in the "u8g2 display, I²C" menu.
 
 ## Config
 
-The `times` table is a array of seven entries, one per day of the week. It starts on 1 for Sunday, to 7 for Monday. You can have a separate entry for each day, or reuse common configs like in the example.
+The `times` table is an array of seven entries, one per day of the week. It starts on 1 for Sunday, to 7 for Monday. You can have a separate entry for each day, or reuse common ones like in the example.
 
 Each day's entry is an array that defines time spans with their starting times, the images to use, and the colors in RGB (1 is full, 0 is off):
 
@@ -74,5 +74,5 @@ To switch, check file `clock.lua:13` and change which block is commented in func
 # Using different components
 
 - The code and wiring should be exactly the same when using a NodeMCU based on the more powerful ESP-32 chip.
-- The built-in U8G2 module supports many kinds of displays out of the box, see [documentation](https://nodemcu.readthedocs.io/en/release/modules/u8g2/). If using another, remember to rebuild the firmware with the right option for the U8G module, and update the function call in `init_i2c_display()` in `clock.lua:47`
-- If your display is a different size than 128x64, you will need to update the arguments to the call to `disp:drawXBM()`, in `clock.lua:96`, and provide different images
+- The built-in U8G2 module supports many kinds of displays out of the box, see [documentation](https://nodemcu.readthedocs.io/en/release/modules/u8g2/). If using another, remember to rebuild the firmware with the right option for the U8G module, and update the function call in `init_i2c_display()` in `clock.lua:47`.
+- If your display is a different size than 128x64, you will need to update the arguments to the call to `disp:drawXBM()`, in `clock.lua:96`, and provide different images.
