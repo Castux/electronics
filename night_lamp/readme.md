@@ -1,7 +1,7 @@
 Children Wake Up Lamp
 =====================
 
-![Night light](img/light.jpg)
+![Night light](img/finished-lamp.jpg)
 
 This simple electronics project helps children learn to fall back asleep at night, and wake up only at a given time. The light changes color at specific times, and the display shows different images. You can set up as many phases as you wish (such as sleep/calm activity/wake up), and different settings for each day of the week.
 
