@@ -1,0 +1,46 @@
+local images = dofile "images.lua"
+
+local weekday = {
+	{from = "07:00", image = images.waking, color = {1,0.5,0}},
+	{from = "07:20", image = images.awake, color = {0,0.5,0.5}},
+	{from = "20:00", image = images.sleeping, color = {0.25,0,0.5}}
+}
+
+local weekend = {
+	{from = "07:00", image = images.waking, color = {1,0.5,0}},
+	{from = "07:50", image = images.awake, color = {0,0.5,0.5}},
+	{from = "20:00", image = images.sleeping, color = {0.25,0,0.5}}
+}
+
+local holidays = {
+	{from = "07:00", image = images.waking, color = {1,0.5,0}}, -- golden
+	{from = "08:00", image = images.awake, color = {0,0.5,0.5}},  -- cyan
+	{from = "20:00", image = images.sleeping, color = {0.25,0,0.5}} -- purple
+}
+
+return {
+	ssid = "Molybdenum",
+	password = "AtomicNumber42!",
+	timezone = 3,
+
+	-- RGB led
+	pin_r = 3,
+	pin_g = 1,
+	pin_b = 2,
+
+	-- I2C display
+	scl = 6,
+	sda = 5,
+	sla = 0x3c,
+
+	-- 1 is Sunday
+	times = {
+		[1] = weekend,
+		[2] = weekday,
+		[3] = weekday,
+		[4] = weekday,
+		[5] = weekday,
+		[6] = weekday,
+		[7] = weekend
+	}
+}
